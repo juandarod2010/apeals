@@ -38,7 +38,18 @@ async function run(): Promise<void> {
   }
 
   const credentials = supabaseCredentials(env);
-  if (isMock(env)) {
+  if (isMock(env) && credentials) {
+    // La contradiccion que mas caro sale: las claves estan puestas y son
+    // buenas, asi que las tablas de abajo responden y el resumen sale sin
+    // fallos. Pero la aplicacion no las usa, y cada lead se queda en el
+    // navegador del visitante. Parece conectado y no lo esta.
+    add(
+      'Modo',
+      'fallo',
+      'Hay credenciales de Supabase, pero VITE_MOCK no vale exactamente "false": ' +
+        'la aplicacion NO las usa y los leads se guardan en el navegador del visitante.',
+    );
+  } else if (isMock(env)) {
     add('Modo', 'ok', 'MOCK: los datos viven en el localStorage del navegador.');
   } else if (!credentials) {
     add('Modo', 'fallo', 'VITE_MOCK=false pero faltan VITE_SUPABASE_URL o VITE_SUPABASE_ANON_KEY.');
