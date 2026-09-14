@@ -120,6 +120,26 @@ test.describe('Track A — apelaciones', () => {
 });
 
 test.describe('Oferta de entrada', () => {
+  test('/pricing no se interpone entre el cliente y mandar su caso', async ({ page }) => {
+    // La decisión de negocio que no se puede perder: /revision NO cobra por
+    // adelantado. /pricing es la pasarela de la entrega, no un peaje de entrada.
+    await page.goto('/pricing');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Revisión');
+    await page.getByRole('link', { name: 'Mandar mi caso' }).click();
+    await expect(page).toHaveURL(/\/revision/);
+    await expect(page.locator('body')).toContainText('No se cobra nada ahora');
+  });
+
+  test('/pricing con un lead pide el pago, y avisa si no está configurado', async ({ page }) => {
+    // El SDK de PayPal no se carga en las pruebas: lo que se comprueba es que
+    // la página entra en modo cobro y que, sin configuración, lo dice en vez de
+    // enseñar un hueco vacío donde debería haber un botón.
+    await page.route('**://*.paypal.com/**', (route) => route.abort());
+    await page.goto('/pricing?lead=09d55613-fdbb-47d9-86a0-431a7cdcf123');
+    await expect(page.getByRole('heading', { name: 'Pagar la revisión' })).toBeVisible();
+    await expect(page.getByRole('alert')).toContainText('no está configurado');
+  });
+
   /**
    * La portada vendía el informe RAP de 97 $, que sigue bloqueado por la base de
    * reglas sin verificar. Un prospecto de APEALS aterrizaba en una oferta que no

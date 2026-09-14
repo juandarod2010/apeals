@@ -4,8 +4,7 @@ import {
   BRAND,
   DISCLAIMER,
   ENTRY_OFFER,
-  PAYMENT,
-  PAYMENT_LINK_MISSING,
+  paymentUrl,
 } from '../config/brand';
 
 /**
@@ -102,21 +101,25 @@ ${BRAND.contactEmail}`,
  */
 export interface RevisionDeliveryInput {
   name?: string | null;
+  /** El lead que paga. Va dentro del enlace: es lo que ata el pago al caso. */
+  leadId: string;
+  /** Origen del sitio desplegado. El panel pasa el suyo. */
+  origin: string;
   /** Lo que se ha reescrito, en una línea por punto. */
   changes: string[];
   /** Pruebas que le faltan al cliente, una por línea. */
   missingEvidence: string[];
 }
 
-/** El bloque de cobro, o el aviso de que no se puede cobrar todavía. */
-export function paymentBlock(): string {
-  if (!PAYMENT.link) return PAYMENT_LINK_MISSING;
-  const via = PAYMENT.provider ? ` por ${PAYMENT.provider}` : '';
-  return `Para pagar los ${ENTRY_OFFER.price.label}${via}: ${PAYMENT.link}`;
+/** El bloque de cobro: un enlace que ya sabe de qué caso se trata. */
+export function paymentBlock(origin: string, leadId: string): string {
+  return `Para pagar los ${ENTRY_OFFER.price.label}: ${paymentUrl(origin, leadId)}`;
 }
 
 export function buildRevisionDeliveryEmail({
   name,
+  leadId,
+  origin,
   changes,
   missingEvidence,
 }: RevisionDeliveryInput): { subject: string; body: string } {
@@ -139,7 +142,7 @@ Un aviso que te ahorra un intento: no lo mandes hasta tener esas pruebas. Cada
 plan rechazado deja rastro en el expediente y hace más cuesta arriba el
 siguiente.
 
-${paymentBlock()}
+${paymentBlock(origin, leadId)}
 
 Si algo de la revisión no te cuadra, respóndeme y lo repasamos: eso no se paga
 aparte.

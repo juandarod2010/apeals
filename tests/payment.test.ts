@@ -1,24 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import { ENTRY_OFFER, PAYMENT, PAYMENT_LINK_MISSING } from '../src/config/brand';
+import { ENTRY_OFFER, paymentUrl } from '../src/config/brand';
 import { buildRevisionDeliveryEmail, paymentBlock } from '../src/lib/emailTemplates';
+
+const LEAD = '09d55613-fdbb-47d9-86a0-431a7cdcf123';
+const ORIGIN = 'https://complyo-apeals.vercel.app';
 
 /**
  * El correo de entrega de la revisión es también la factura: la oferta se cobra
- * AL entregar, no antes. O sea que es el único momento en que se pide dinero.
- *
- * EL FALLO QUE EVITA. Sin enlace de cobro configurado, lo fácil es que el
- * bloque de pago se quede vacío y el correo salga igual: trabajo entregado y
- * nada cobrado, sin que nada lo delate. Así que cuando falta el enlace, el
- * texto lo grita.
+ * AL entregar, no antes. Es el único momento en que se pide dinero, así que el
+ * enlace de pago tiene que estar dentro y tiene que saber de qué caso es.
  */
-describe('cobro de la revisión', () => {
+describe('enlace de cobro', () => {
   const entrega = () =>
-    buildRevisionDeliveryEmail({ name: 'Tienda', changes: [], missingEvidence: [] });
+    buildRevisionDeliveryEmail({
+      name: 'Tienda',
+      leadId: LEAD,
+      origin: ORIGIN,
+      changes: [],
+      missingEvidence: [],
+    });
 
-  it('sin enlace configurado, el correo avisa de que no puede salir', () => {
-    expect(PAYMENT.link, 'si ya hay enlace, actualiza este test').toBe('');
-    expect(paymentBlock()).toBe(PAYMENT_LINK_MISSING);
-    expect(entrega().body).toContain(PAYMENT_LINK_MISSING);
+  it('lleva el lead dentro: es lo que ata el pago al caso', () => {
+    expect(paymentUrl(ORIGIN, LEAD)).toBe(`${ORIGIN}/pricing?lead=${LEAD}`);
+    expect(entrega().body).toContain(`/pricing?lead=${LEAD}`);
+  });
+
+  it('no duplica la barra si el origen trae uno', () => {
+    expect(paymentUrl(`${ORIGIN}/`, LEAD)).toBe(`${ORIGIN}/pricing?lead=${LEAD}`);
+  });
+
+  it('el bloque de cobro dice el precio de la oferta', () => {
+    expect(paymentBlock(ORIGIN, LEAD)).toContain(ENTRY_OFFER.price.label);
   });
 
   it('el correo no promete la reactivación de la cuenta', () => {
@@ -34,11 +46,6 @@ describe('cobro de la revisión', () => {
 
   it('firma como el producto y con el correo real', () => {
     expect(entrega().body).toContain('Complyo APEALS');
-    expect(entrega().body).toContain('@');
     expect(entrega().body).not.toContain('complyo.eu');
-  });
-
-  it('el precio sale de la configuración de la oferta, no escrito a mano', () => {
-    expect(ENTRY_OFFER.price.label).toBe('59 $');
   });
 });

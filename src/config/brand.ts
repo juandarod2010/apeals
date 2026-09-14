@@ -219,23 +219,18 @@ export const APPEALS_LANDING = {
 /**
  * COBRO DE LA OFERTA DE ENTRADA.
  *
- * No hay pasarela integrada y es deliberado: se cobra AL ENTREGAR, pegando un
- * enlace en el correo de entrega. A 59 $ y sin volumen, integrar un carrito es
- * trabajo que no vende nada.
+ * Se cobra AL ENTREGAR, no antes: quitar el pago del principio es lo que hace
+ * que un desconocido se atreva a probar. El correo de entrega lleva un enlace a
+ * /pricing con el lead dentro, y ahí paga.
  *
- * `link` vacío = todavía no hay cuenta de cobro. El correo de entrega lo dice
- * en alto en vez de salir sin forma de pagar, que es la manera de entregar un
- * trabajo y no cobrarlo. Ver `buildRevisionDeliveryEmail`.
+ * El enlace NO se configura: se compone con el origen del propio panel, que ya
+ * está desplegado en el sitio correcto. Una URL escrita a mano en la
+ * configuración es una URL que se queda obsoleta al cambiar de dominio.
  */
-export const PAYMENT = {
-  /** Enlace PayPal.me. Vacío hasta que la cuenta exista. */
-  link: '',
-  /** Cómo se llama, para el cliente. */
-  provider: 'PayPal',
-} as const;
+export function paymentUrl(origin: string, leadId: string): string {
+  return `${origin.replace(/\/$/, '')}/pricing?lead=${encodeURIComponent(leadId)}`;
+}
 
-/** Marca que el correo de entrega no puede salir así. */
-export const PAYMENT_LINK_MISSING = '[FALTA EL ENLACE DE COBRO — no envíes este correo]';
 
 /**
  * Colores corporativos. Se usan en el PDF y como referencia para la web.

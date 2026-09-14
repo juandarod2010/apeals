@@ -12,6 +12,7 @@ import AppealsPage from './pages/AppealsPage';
 import DiagnosticoPage from './pages/DiagnosticoPage';
 import InformePage from './pages/InformePage';
 import LandingPage from './pages/LandingPage';
+import PricingPage from './pages/PricingPage';
 import ProspeccionPage from './pages/ProspeccionPage';
 import RevisionPage from './pages/RevisionPage';
 
@@ -21,6 +22,7 @@ export default function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/appeals" element={<AppealsPage />} />
       <Route path="/revision" element={<RevisionPage />} />
+      <Route path="/pricing" element={<PricingPage />} />
       <Route path="/diagnostico" element={<DiagnosticoPage />} />
       <Route path="/informe/:id" element={<InformePage />} />
 

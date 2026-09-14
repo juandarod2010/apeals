@@ -8,7 +8,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { APPEALS, BRAND, DISCLAIMER, PAYMENT, SERVICE_COMMITMENTS } from '../config/brand';
+import { APPEALS, BRAND, DISCLAIMER, SERVICE_COMMITMENTS } from '../config/brand';
 import { RULES } from '../data/rules';
 import { isMock, loadEnv, supabaseCredentials } from './lib/env';
 
@@ -93,11 +93,27 @@ if (APPEALS.successRate === null) {
   );
 }
 
-if (!PAYMENT.link) {
+if (!env.VITE_PAYPAL_CLIENT_ID) {
   add(
     'aviso',
-    'No hay enlace de cobro configurado.',
-    'Rellena PAYMENT en src/config/brand.ts. Sin él, el correo de entrega sale avisando de que no se puede pagar: la revisión se cobra AL entregarla, así que ese correo es la factura.',
+    'Falta VITE_PAYPAL_CLIENT_ID: /pricing no puede cobrar.',
+    'Añádela a las variables del despliegue. El correo de entrega seguirá enviando al cliente a /pricing, y allí no le saldrá ningún botón de pago.',
+  );
+}
+
+if (env.VITE_PAYPAL_CLIENT_SECRET) {
+  add(
+    'bloqueante',
+    'Hay un secreto de PayPal con prefijo VITE_.',
+    'Quítalo y déjalo como PAYPAL_CLIENT_SECRET. Todo lo que empieza por VITE_ se incrusta en el JavaScript que descarga cualquiera.',
+  );
+}
+
+if (env.VITE_PAYPAL_ENV === 'live' && !env.PAYPAL_WEBHOOK_ID) {
+  add(
+    'bloqueante',
+    'PayPal en live sin PAYPAL_WEBHOOK_ID.',
+    'Sin ese identificador no se puede verificar ninguna firma, y el webhook acepta cualquier JSON que le manden: cualquiera podría marcar leads como pagados.',
   );
 }
 

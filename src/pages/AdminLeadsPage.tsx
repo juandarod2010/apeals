@@ -135,6 +135,10 @@ export default function AdminLeadsPage() {
   function copyDelivery(lead: Lead) {
     const mail = buildRevisionDeliveryEmail({
       name: lead.companyName,
+      leadId: lead.id,
+      // El origen del panel es el del sitio desplegado: el enlace siempre
+      // apunta a donde de verdad está la pasarela.
+      origin: window.location.origin,
       changes: [],
       missingEvidence: [],
     });
