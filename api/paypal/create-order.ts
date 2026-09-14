@@ -1,7 +1,7 @@
-import { buildOrderPayload, LEAD_ID } from '../../src/lib/payments/paypal';
-import { leadExists } from '../_lib/db';
-import { json, serverEnv } from '../_lib/env';
-import { paypalFetch } from '../_lib/paypal';
+import { buildOrderPayload, LEAD_ID } from '../../src/lib/payments/paypal.js';
+import { leadExists } from '../_lib/db.js';
+import { json, serverEnv } from '../_lib/env.js';
+import { paypalFetch } from '../_lib/paypal.js';
 
 export const config = { runtime: 'edge' };
 

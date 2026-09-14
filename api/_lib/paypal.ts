@@ -1,5 +1,5 @@
-import { apiBase } from '../../src/lib/payments/paypal';
-import type { ServerEnv } from './env';
+import { apiBase } from '../../src/lib/payments/paypal.js';
+import type { ServerEnv } from './env.js';
 
 /** Token de acceso. Se pide por petición: son funciones sin estado. */
 export async function accessToken(env: ServerEnv): Promise<string> {

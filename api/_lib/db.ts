@@ -1,5 +1,5 @@
-import type { PaymentRecord } from '../../src/lib/payments/paypal';
-import type { ServerEnv } from './env';
+import type { PaymentRecord } from '../../src/lib/payments/paypal.js';
+import type { ServerEnv } from './env.js';
 
 /**
  * Acceso a Supabase desde el servidor, con `service_role`.

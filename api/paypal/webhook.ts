@@ -1,7 +1,7 @@
-import { matchesOffer, parseCaptureEvent } from '../../src/lib/payments/paypal';
-import { markLeadPaid, recordPayment } from '../_lib/db';
-import { json, serverEnv } from '../_lib/env';
-import { verifySignature } from '../_lib/paypal';
+import { matchesOffer, parseCaptureEvent } from '../../src/lib/payments/paypal.js';
+import { markLeadPaid, recordPayment } from '../_lib/db.js';
+import { json, serverEnv } from '../_lib/env.js';
+import { verifySignature } from '../_lib/paypal.js';
 
 export const config = { runtime: 'edge' };
 

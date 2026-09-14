@@ -1,5 +1,5 @@
-import { json, serverEnv } from '../_lib/env';
-import { paypalFetch } from '../_lib/paypal';
+import { json, serverEnv } from '../_lib/env.js';
+import { paypalFetch } from '../_lib/paypal.js';
 
 export const config = { runtime: 'edge' };
 

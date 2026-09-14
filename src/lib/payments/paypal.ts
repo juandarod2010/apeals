@@ -1,4 +1,4 @@
-import { ENTRY_OFFER } from '../../config/brand';
+import { ENTRY_OFFER } from '../../config/brand.js';
 
 /**
  * Lógica de cobro de PayPal, sin nada de red ni de entorno.

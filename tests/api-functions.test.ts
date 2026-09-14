@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { execFileSync } from 'node:child_process';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -87,4 +88,32 @@ describe('código de las funciones serverless', () => {
     expect(src).toContain('buildOrderPayload');
     expect(src).not.toMatch(/body\??\.\s*amount/);
   });
+});
+
+describe('las funciones compilan como las compila Vercel', () => {
+  it('los imports relativos llevan extensión .js', () => {
+    /**
+     * EL FALLO QUE FIJA. Vercel compila /api con moduleResolution node16, que
+     * en ESM exige extensión explícita. `npm run build` usa la resolución de
+     * Vite, que no la exige, así que en local pasa y el despliegue se cae. Pasó
+     * dos veces seguidas.
+     *
+     * Esto ejecuta la misma comprobación que hace Vercel, y recorre también lo
+     * que las funciones importan de src/.
+     */
+    const entradas = ficheros('api').filter((f) => !f.includes('_lib'));
+    expect(entradas.length).toBeGreaterThan(0);
+
+    try {
+      execFileSync(
+        'npx',
+        ['tsc', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext',
+         '--target', 'es2022', '--lib', 'es2023,dom', '--strict', '--skipLibCheck', ...entradas],
+        { encoding: 'utf8', stdio: 'pipe' },
+      );
+    } catch (e) {
+      const salida = (e as { stdout?: string }).stdout ?? String(e);
+      throw new Error(`Vercel no compilará esto:\n${salida}`);
+    }
+  }, 60_000);
 });
