@@ -19,8 +19,23 @@ function ficheros(dir: string): string[] {
 
 describe('enrutado de /api', () => {
   const vercel = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
-    rewrites: { source: string }[];
+    rewrites: Record<string, unknown>[] & { source: string }[];
   };
+
+  it('cada reescritura solo usa claves que Vercel acepta', () => {
+    /**
+     * Vercel valida vercel.json ANTES de construir. Una clave de más -por
+     * ejemplo un "comment", porque JSON no admite comentarios- tira el
+     * despliegue sin generar un solo registro de build, mientras `npm run
+     * build` sigue pasando en local tan contento. Pasó exactamente eso.
+     */
+    const permitidas = new Set(['source', 'destination', 'has', 'missing', 'statusCode']);
+    for (const r of vercel.rewrites) {
+      for (const clave of Object.keys(r)) {
+        expect(permitidas.has(clave), `clave no admitida en rewrites: ${clave}`).toBe(true);
+      }
+    }
+  });
 
   it('la reescritura de la SPA no se traga las funciones', () => {
     /**
