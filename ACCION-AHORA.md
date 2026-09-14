@@ -134,16 +134,34 @@ Queda sin decidir `domain`, que sigue en `complyo.eu`. **No lo ve ningún
 cliente**: sólo lo usa `predeploy:check` para avisarte. Se rellena cuando
 decidas dónde se publica.
 
-### 2. Desplegar (15 minutos)
+### 2. Desplegar — HECHO
+
+Proyecto de Vercel `complyo-apeals`, enlazado a `juandarod2010/apeals`. La rama
+de producción es `main`: **cada push a `main` despliega solo**, no hace falta
+ejecutar nada a mano.
 
 ```bash
-npm run predeploy:check     # te dice qué falta
-npm run build
-npx vercel deploy --prod    # vercel.json ya está listo
+npm run predeploy:check     # antes de empujar: te dice qué falta
 ```
 
-Resultado esperado: `https://loquesea.vercel.app/revision` abre y el formulario
-envía.
+**Lo que no se puede olvidar.** Las variables `VITE_*` se incrustan al
+CONSTRUIR, no se leen en ejecución. Viven en Vercel, en Settings →
+Environment Variables, y hay que marcarlas en **Production**:
+
+| Variable | Valor |
+| --- | --- |
+| `VITE_MOCK` | `false` |
+| `VITE_SUPABASE_URL` | la del proyecto de Supabase |
+| `VITE_SUPABASE_ANON_KEY` | la clave `anon`, que es pública por diseño |
+| `VITE_ADMIN_PASSWORD` | una contraseña propia |
+
+Si faltan, el build sale en MOCK y el sitio publicado se traga todos los leads.
+Para que eso no pase en silencio, las páginas que recogen casos avisan en rojo
+cuando el almacenamiento es MOCK y el dominio no es local. Ver
+`src/lib/deployGuard.ts`.
+
+**Un cambio de variables no se aplica solo:** hay que desplegar otra vez, porque
+lo que cambia es el build.
 
 ### 3. Conectar Supabase (30 minutos)
 
