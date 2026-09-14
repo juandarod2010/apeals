@@ -20,7 +20,12 @@ import {
   rangeLabel,
   type LeadFilters,
 } from '../lib/leadFilters';
-import { buildAppealReplyEmail, buildDiagnosisEmail } from '../lib/emailTemplates';
+import {
+  buildAppealReplyEmail,
+  buildDiagnosisEmail,
+  buildRevisionDeliveryEmail,
+} from '../lib/emailTemplates';
+import { isRevisionLead } from '../lib/revisionLead';
 import { analyzeSuspensionEmail } from '../modules/appeals/analyzer';
 import { COUNTRIES, COUNTRY_LABELS, type CountryCode } from '../types/domain';
 
@@ -119,6 +124,23 @@ export default function AdminLeadsPage() {
     navigator.clipboard
       .writeText(`${mail.subject}\n\n${mail.body}`)
       .then(() => setCopied(lead.id))
+      .catch(() => setError('El navegador ha bloqueado el portapapeles.'));
+  }
+
+  /**
+   * Copia el correo de ENTREGA, que es también la factura: la revisión se cobra
+   * al entregarla. Los dos huecos se rellenan a mano antes de enviarlo, porque
+   * solo tú sabes qué has reescrito en ese plan.
+   */
+  function copyDelivery(lead: Lead) {
+    const mail = buildRevisionDeliveryEmail({
+      name: lead.companyName,
+      changes: [],
+      missingEvidence: [],
+    });
+    navigator.clipboard
+      .writeText(`${mail.subject}\n\n${mail.body}`)
+      .then(() => setCopied(`${lead.id}:entrega`))
       .catch(() => setError('El navegador ha bloqueado el portapapeles.'));
   }
 
@@ -376,6 +398,16 @@ export default function AdminLeadsPage() {
                           onClick={() => copyEmail(lead, report?.reference)}
                         >
                           {copied === lead.id ? 'Copiado' : 'Correo'}
+                        </button>
+                      )}
+                      {isRevisionLead(lead.appeal?.story) && (
+                        <button
+                          type="button"
+                          className="ml-3 text-brand-600 underline"
+                          title="Copia el correo de entrega con el cobro de la revisión"
+                          onClick={() => copyDelivery(lead)}
+                        >
+                          {copied === `${lead.id}:entrega` ? 'Copiado' : 'Entrega y cobro'}
                         </button>
                       )}
                       <button

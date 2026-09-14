@@ -8,7 +8,7 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { APPEALS, BRAND, DISCLAIMER, SERVICE_COMMITMENTS } from '../config/brand';
+import { APPEALS, BRAND, DISCLAIMER, PAYMENT, SERVICE_COMMITMENTS } from '../config/brand';
 import { RULES } from '../data/rules';
 import { isMock, loadEnv, supabaseCredentials } from './lib/env';
 
@@ -90,6 +90,14 @@ if (APPEALS.successRate === null) {
     'aviso',
     'La página de apelaciones no publica tasa de éxito (correcto si aún no tienes casos cerrados).',
     'Cuando los tengas, rellena APPEALS.successRate con la cifra y el tamaño de la muestra.',
+  );
+}
+
+if (!PAYMENT.link) {
+  add(
+    'aviso',
+    'No hay enlace de cobro configurado.',
+    'Rellena PAYMENT en src/config/brand.ts. Sin él, el correo de entrega sale avisando de que no se puede pagar: la revisión se cobra AL entregarla, así que ese correo es la factura.',
   );
 }
 

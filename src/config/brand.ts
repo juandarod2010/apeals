@@ -217,6 +217,27 @@ export const APPEALS_LANDING = {
 } as const;
 
 /**
+ * COBRO DE LA OFERTA DE ENTRADA.
+ *
+ * No hay pasarela integrada y es deliberado: se cobra AL ENTREGAR, pegando un
+ * enlace en el correo de entrega. A 59 $ y sin volumen, integrar un carrito es
+ * trabajo que no vende nada.
+ *
+ * `link` vacío = todavía no hay cuenta de cobro. El correo de entrega lo dice
+ * en alto en vez de salir sin forma de pagar, que es la manera de entregar un
+ * trabajo y no cobrarlo. Ver `buildRevisionDeliveryEmail`.
+ */
+export const PAYMENT = {
+  /** Enlace de cobro (PayPal.me, Payoneer, el que sea). Vacío hasta que exista. */
+  link: '',
+  /** Cómo se llama, para el cliente. */
+  provider: '',
+} as const;
+
+/** Marca que el correo de entrega no puede salir así. */
+export const PAYMENT_LINK_MISSING = '[FALTA EL ENLACE DE COBRO — no envíes este correo]';
+
+/**
  * Colores corporativos. Se usan en el PDF y como referencia para la web.
  * Formato RGB 0–255, que es lo que consume jsPDF directamente.
  * Si los cambias aquí, cambian en el PDF sin tocar más código; en la web,
