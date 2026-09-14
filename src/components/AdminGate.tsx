@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { BRAND } from '../config/brand';
 import {
   authMode,
@@ -8,6 +8,7 @@ import {
   signIn,
   type AdminSession,
 } from '../lib/adminAuth';
+import { SessionContext } from './adminSession';
 
 /**
  * Portero de las pantallas internas.
@@ -44,7 +45,8 @@ export default function AdminGate({
     );
   }
 
-  if (session) return <>{children(session)}</>;
+  if (session)
+    return <SessionContext.Provider value={session}>{children(session)}</SessionContext.Provider>;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -125,4 +127,24 @@ export default function AdminGate({
       </form>
     </div>
   );
+}
+
+
+/**
+ * Portero a nivel de ruta: las pantallas internas se MONTAN solo cuando ya hay
+ * sesión.
+ *
+ * EL FALLO QUE ARREGLA. Antes cada página envolvía al portero, o sea que la
+ * página era el padre y su carga de datos se disparaba al montarse, con el
+ * portero todavía comprobando la sesión. Esa consulta salía como `anon`, y ahí
+ * está lo venenoso: RLS no deniega un SELECT con un error, responde 200 con
+ * cero filas. El panel pintaba «no hay leads» teniendo leads, sin un solo
+ * mensaje en la consola. Y al iniciar sesión nada volvía a pedir los datos,
+ * porque las dependencias del efecto no habían cambiado.
+ *
+ * Montando las páginas por debajo del portero, no existen hasta que hay sesión
+ * y su primera consulta ya va autenticada.
+ */
+export function AdminRoutes() {
+  return <AdminGate>{() => <Outlet />}</AdminGate>;
 }

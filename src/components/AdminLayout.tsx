@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import AdminGate from './AdminGate';
+import { useAdminSession } from './adminSession';
 import { BRAND } from '../config/brand';
 import { signOut, type AdminSession } from '../lib/adminAuth';
 import { storage } from '../lib/storage';
@@ -27,7 +27,15 @@ export default function AdminLayout({
   actions?: React.ReactNode;
   children: React.ReactNode;
 }) {
-  return <AdminGate>{(session) => <Shell session={session} title={title} actions={actions}>{children}</Shell>}</AdminGate>;
+  // El portero va en las rutas (AdminRoutes), no aquí: si envolviera a la
+  // pagina desde dentro, la pagina seria su padre y pediria los datos sin
+  // sesion. Ver AdminGate.tsx.
+  const session = useAdminSession();
+  return (
+    <Shell session={session} title={title} actions={actions}>
+      {children}
+    </Shell>
+  );
 }
 
 /**

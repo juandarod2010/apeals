@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
+import { AdminRoutes } from './components/AdminGate';
 import AdminAbPage from './pages/AdminAbPage';
 import AdminFillRulesPage from './pages/AdminFillRulesPage';
 import AdminLeadsPage from './pages/AdminLeadsPage';
@@ -23,16 +24,20 @@ export default function App() {
       <Route path="/diagnostico" element={<DiagnosticoPage />} />
       <Route path="/informe/:id" element={<InformePage />} />
 
-      <Route path="/admin" element={<Navigate to="/admin/leads" replace />} />
-      <Route path="/admin/leads" element={<AdminLeadsPage />} />
-      <Route path="/admin/metas" element={<AdminMetasPage />} />
-      <Route path="/admin/mensajes" element={<AdminMensajesPage />} />
-      <Route path="/admin/rules-status" element={<AdminRulesStatusPage />} />
-      <Route path="/admin/fill-rules" element={<AdminFillRulesPage />} />
-      <Route path="/admin/rules-history" element={<AdminRulesHistoryPage />} />
-      <Route path="/admin/poa" element={<AdminPoaPage />} />
-      <Route path="/admin/ab" element={<AdminAbPage />} />
-      <Route path="/prospeccion" element={<ProspeccionPage />} />
+      {/* Todo lo interno cuelga del portero: ninguna de estas paginas se monta
+          —ni pide datos— hasta que hay sesion. Ver AdminGate.tsx. */}
+      <Route element={<AdminRoutes />}>
+        <Route path="/admin" element={<Navigate to="/admin/leads" replace />} />
+        <Route path="/admin/leads" element={<AdminLeadsPage />} />
+        <Route path="/admin/metas" element={<AdminMetasPage />} />
+        <Route path="/admin/mensajes" element={<AdminMensajesPage />} />
+        <Route path="/admin/rules-status" element={<AdminRulesStatusPage />} />
+        <Route path="/admin/fill-rules" element={<AdminFillRulesPage />} />
+        <Route path="/admin/rules-history" element={<AdminRulesHistoryPage />} />
+        <Route path="/admin/poa" element={<AdminPoaPage />} />
+        <Route path="/admin/ab" element={<AdminAbPage />} />
+        <Route path="/prospeccion" element={<ProspeccionPage />} />
+      </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
