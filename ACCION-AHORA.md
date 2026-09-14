@@ -178,9 +178,30 @@ Resultado esperado: envías una prueba desde `/revision` y la ves en
 
 ### 5. Abrir la vía de cobro (20 minutos)
 
-Necesitas un enlace de cobro que puedas pegar en un correo. PayPal.me, Stripe
-Payment Link o Wise sirven. No hay que integrar nada: se cobra al entregar,
-pegando el enlace.
+**PayPal**, cuenta Business, con el banco panameño vinculado. No hay que
+integrar nada: se cobra al entregar, pegando el enlace en el correo.
+
+Comprobado para Panamá, porque no todo vale:
+
+| Proveedor | ¿Sirve? | Por qué |
+| --- | --- | --- |
+| **PayPal** | **Sí** | Recibe pagos comerciales y retira a banco panameño vía MetroBank-Kipo: 750 $/día, 5.000 $/mes por persona natural |
+| Payoneer | Sí | Alternativa. Cédula y prueba de domicilio; retiro en 2–5 días por B/.1,50–3,00 |
+| Stripe | No | Panamá no está soportado. Solo con una LLC en EE. UU. |
+| Wise | No | Un residente en Panamá no puede mantener saldo ni tener tarjeta |
+
+**Cuenta con un 4,4 % + comisión fija** en pagos internacionales, que es lo que
+serán casi todos: sobre 59 $ son unos 2,90 $. Y **cobra en USD**; si el pago
+llega en otra moneda, PayPal añade un 3–4 % de diferencial de cambio encima.
+
+Los tres proveedores exigen **18 años cumplidos**, porque abrir la cuenta es
+firmar un contrato. Si no los tienes, la cuenta la abre un adulto a su nombre y
+pasa a ser el titular legal y fiscal de esos ingresos. Falsear la edad acaba en
+cierre de cuenta y retención de fondos, justo cuando ya hay dinero dentro.
+
+Cuando tengas el enlace, va en `PAYMENT` (`src/config/brand.ts`). Mientras esté
+vacío, el correo de entrega avisa de que no puede salir, y `predeploy:check`
+también.
 
 Resultado esperado: un enlace que abre una pantalla de pago de 59 $.
 

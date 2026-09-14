@@ -228,10 +228,10 @@ export const APPEALS_LANDING = {
  * trabajo y no cobrarlo. Ver `buildRevisionDeliveryEmail`.
  */
 export const PAYMENT = {
-  /** Enlace de cobro (PayPal.me, Payoneer, el que sea). Vacío hasta que exista. */
+  /** Enlace PayPal.me. Vacío hasta que la cuenta exista. */
   link: '',
   /** Cómo se llama, para el cliente. */
-  provider: '',
+  provider: 'PayPal',
 } as const;
 
 /** Marca que el correo de entrega no puede salir así. */
