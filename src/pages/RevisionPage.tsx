@@ -120,7 +120,7 @@ export default function RevisionPage() {
                 <ul className="mt-6 space-y-2">
                   {ENTRY_OFFER.deliverables.map((d) => (
                     <li key={d} className="flex gap-3 text-sm text-slate-700">
-                      <span aria-hidden className="mt-1 text-primary">
+                      <span aria-hidden className="mt-1 text-brand-600">
                         ✓
                       </span>
                       <span>{d}</span>
@@ -193,7 +193,7 @@ export default function RevisionPage() {
 
                 <button
                   type="button"
-                  className="mt-6 w-full rounded-lg bg-primary px-5 py-3 font-semibold text-white disabled:opacity-40"
+                  className="btn-primary mt-6 w-full"
                   disabled={!canSend}
                   onClick={handleSubmit}
                 >

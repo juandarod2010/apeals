@@ -196,7 +196,7 @@ export default function AppealsPage() {
                 */}
                 <p className="text-sm text-slate-600">
                   ¿Te parece mucho para empezar? Si ya tienes un plan escrito, te lo{' '}
-                  <Link to="/revision" className="font-medium text-primary underline">
+                  <Link to="/revision" className="font-medium text-brand-600 underline">
                     reviso por {ENTRY_OFFER.price.label} en {ENTRY_OFFER.deliveryHours} horas
                   </Link>
                   .

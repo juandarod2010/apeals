@@ -65,7 +65,7 @@ export default function AdminMetasPage() {
             </p>
             <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-200">
               <div
-                className="h-full bg-primary"
+                className="h-full bg-brand-600"
                 style={{ width: `${Math.round(progress.ratio * 100)}%` }}
               />
             </div>

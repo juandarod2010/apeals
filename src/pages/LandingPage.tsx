@@ -62,7 +62,7 @@ export default function LandingPage() {
             <p className="mt-6 border-t border-slate-200 pt-6 text-sm text-slate-600">
               ¿Vendes a la Unión Europea y quieres saber qué te exige el{' '}
               {REGULATION.reference}?{' '}
-              <Link to="/diagnostico" className="font-medium text-primary underline">
+              <Link to="/diagnostico" className="font-medium text-brand-600 underline">
                 Ver mi exposición
               </Link>
               .
