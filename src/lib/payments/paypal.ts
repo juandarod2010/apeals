@@ -59,9 +59,14 @@ export interface PaymentRecord {
   payerEmail: string | null;
 }
 
+/**
+ * Los dos lados declaran ambos campos. Sin esto hay que fiarse del
+ * estrechamiento por `ok`, y eso exige strictNullChecks: el compilador de
+ * Vercel no usa las mismas opciones que el nuestro y el build se cae allí.
+ */
 export type ParseResult =
-  | { ok: true; payment: PaymentRecord }
-  | { ok: false; reason: string };
+  | { ok: true; payment: PaymentRecord; reason?: undefined }
+  | { ok: false; payment?: undefined; reason: string };
 
 function get(obj: unknown, ...path: string[]): unknown {
   let cur: unknown = obj;

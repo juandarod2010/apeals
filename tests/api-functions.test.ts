@@ -91,7 +91,7 @@ describe('código de las funciones serverless', () => {
 });
 
 describe('las funciones compilan como las compila Vercel', () => {
-  it('los imports relativos llevan extensión .js', () => {
+  it('compilan con las mismas opciones que usa Vercel', () => {
     /**
      * EL FALLO QUE FIJA. Vercel compila /api con moduleResolution node16, que
      * en ESM exige extensión explícita. `npm run build` usa la resolución de
@@ -108,7 +108,10 @@ describe('las funciones compilan como las compila Vercel', () => {
       execFileSync(
         'npx',
         ['tsc', '--noEmit', '--module', 'nodenext', '--moduleResolution', 'nodenext',
-         '--target', 'es2022', '--lib', 'es2023,dom', '--strict', '--skipLibCheck', ...entradas],
+         // SIN --strict, que es como compila Vercel. Con --strict pasaban cosas
+         // que alli fallan: el estrechamiento de uniones por booleano necesita
+         // strictNullChecks, y sin el, TS no ve el campo y tira el build.
+         '--target', 'es2022', '--lib', 'es2023,dom', '--skipLibCheck', ...entradas],
         { encoding: 'utf8', stdio: 'pipe' },
       );
     } catch (e) {
