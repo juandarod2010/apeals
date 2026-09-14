@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import DeployWarning from '../components/DeployWarning';
 import Footer from '../components/Footer';
 import { APPEALS_BRAND, ENTRY_DISCLAIMER, ENTRY_OFFER } from '../config/brand';
 import { analyzeSuspensionEmail, ANALYZER_DISCLAIMER, severityLabel } from '../modules/appeals/analyzer';
@@ -72,6 +73,7 @@ export default function RevisionPage() {
 
   return (
     <div className="flex min-h-screen flex-col">
+      <DeployWarning />
       <header className="border-b border-slate-200 px-5 py-4">
         <div className="mx-auto flex max-w-3xl items-center justify-between">
           <Link to="/" className="text-lg font-bold tracking-tight">
