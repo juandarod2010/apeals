@@ -42,11 +42,22 @@ if (verified === 0) {
 }
 
 // --- Marca y textos ----------------------------------------------------------
-if (BRAND.domain === 'complyo.eu' || BRAND.contactEmail === 'hola@complyo.eu') {
+if (BRAND.domain === 'complyo.eu') {
   add(
     'aviso',
-    'La marca sigue con los valores de relleno (complyo.eu).',
-    'Cámbialos en src/config/brand.ts. Es un solo fichero.',
+    'El dominio sigue con el valor de relleno (complyo.eu).',
+    'Cámbialo en src/config/brand.ts cuando decidas dónde se publica. No lo ve ningún cliente: solo lo usa esta comprobación.',
+  );
+}
+
+// El correo de contacto sí lo ve el cliente: firma cada mensaje saliente, el
+// pie del PDF y el enlace de contacto del informe. Un buzón que no se abre es
+// un embudo roto que no da ninguna señal.
+if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(BRAND.contactEmail)) {
+  add(
+    'bloqueante',
+    `El correo de contacto no es una dirección válida: ${BRAND.contactEmail}`,
+    'Ponlo en src/config/brand.ts. Firma todos los mensajes salientes.',
   );
 }
 

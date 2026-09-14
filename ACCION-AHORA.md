@@ -124,12 +124,15 @@ Si falla alguna: no se contacta. Anótalo igualmente como descartado.
 Esto es lo único que no puede hacer una máquina. En orden, y no lleva más de una
 tarde.
 
-### 1. Decidir la marca (10 minutos)
+### 1. Decidir la marca — HECHO
 
-Un solo fichero: `src/config/brand.ts`. Cambia `name`, `domain` y
-`contactEmail`. Ahora mismo dice `Complyo` / `complyo.eu` / `hola@complyo.eu`,
-que es relleno. Si no quieres dominio todavía, usa tu correo real: a este precio
-nadie te va a descartar por eso, y es más honesto que un dominio que no existe.
+Complyo es la marca matriz y **Complyo APEALS** el producto de apelaciones y
+revisión de Plan of Action, que es lo que se vende primero. El correo de
+contacto ya es real y firma todos los mensajes salientes.
+
+Queda sin decidir `domain`, que sigue en `complyo.eu`. **No lo ve ningún
+cliente**: sólo lo usa `predeploy:check` para avisarte. Se rellena cuando
+decidas dónde se publica.
 
 ### 2. Desplegar (15 minutos)
 

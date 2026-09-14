@@ -54,7 +54,7 @@ function greeting(sellerName?: string): string {
 }
 
 const OFFER = (country: string) =>
-  `Hago un informe de exposición para ${country} por ${PRICING.report.label} y lo tienes en 24 horas: qué te falta exactamente, qué norma lo exige y qué cuesta arreglarlo. Si prefieres que lo resolvamos nosotros, lo tramitamos con un socio establecido en la Unión Europea.`;
+  `Hago un informe de exposición para ${country} por ${PRICING.report.label} y lo tienes en 24 horas: qué te falta exactamente, qué norma lo exige y qué cuesta arreglarlo.`;
 
 const SIGNATURE = `${BRAND.name}\n${BRAND.contactEmail}`;
 

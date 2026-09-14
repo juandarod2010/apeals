@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import { BRAND } from '../src/config/brand';
 
 /**
  * El recorrido completo, en el navegador y contra el build.
@@ -19,7 +20,9 @@ async function entrarEnAdmin(page: Page, ruta = '/admin/leads') {
 test.describe('Track B — cumplimiento', () => {
   test('landing, diagnóstico, informe y PDF', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('desactivar');
+    // La portada vende APEALS. El diagnóstico RAP sigue accesible, pero como
+    // segunda puerta: ver «la portada lleva a la oferta que se puede entregar».
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Plan of Action');
     await page.getByRole('link', { name: 'Ver mi exposición' }).click();
     await expect(page).toHaveURL(/\/diagnostico/);
 
@@ -75,7 +78,10 @@ test.describe('Track B — cumplimiento', () => {
     // nada y el visitante se iba pensando que la página estaba rota.
     await page.getByRole('button', { name: 'Resolverlo' }).click();
     await expect(page.locator('body')).toContainText('Vamos a ello');
-    await expect(page.locator('body')).toContainText('hola@complyo.eu');
+    // Contra la configuración, no contra una copia: una dirección escrita a mano
+    // aquí se queda obsoleta en cuanto cambia la de verdad, y este test dejaría
+    // de comprobar lo único que importa —que el cliente ve un buzón que existe—.
+    await expect(page.locator('body')).toContainText(BRAND.contactEmail);
     await expect(page.locator('body')).toContainText(/Quiero resolverlo — INFORME-\d{8}/);
   });
 
@@ -114,6 +120,23 @@ test.describe('Track A — apelaciones', () => {
 });
 
 test.describe('Oferta de entrada', () => {
+  /**
+   * La portada vendía el informe RAP de 97 $, que sigue bloqueado por la base de
+   * reglas sin verificar. Un prospecto de APEALS aterrizaba en una oferta que no
+   * se le podía entregar. Esto fija el orden.
+   */
+  test('la portada lleva a la oferta que se puede entregar', async ({ page }) => {
+    await page.goto('/');
+
+    // La llamada principal es APEALS.
+    await page.getByRole('link', { name: 'Empezar con mi caso' }).click();
+    await expect(page).toHaveURL(/\/revision/);
+
+    // Y la portada no anuncia el precio del informe RAP, que no se puede cumplir.
+    await page.goto('/');
+    await expect(page.locator('main')).not.toContainText('97 $');
+  });
+
   test('revisión de plan: analiza, recoge el lead y no cobra por adelantado', async ({ page }) => {
     await page.goto('/revision');
 

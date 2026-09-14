@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
-import { BRAND, ENTRY_OFFER } from '../config/brand';
+import { APPEALS_BRAND, ENTRY_DISCLAIMER, ENTRY_OFFER } from '../config/brand';
 import { analyzeSuspensionEmail, ANALYZER_DISCLAIMER, severityLabel } from '../modules/appeals/analyzer';
 import { storage } from '../lib/storage';
 import { composeRevisionStory } from '../lib/revisionLead';
@@ -75,7 +75,7 @@ export default function RevisionPage() {
       <header className="border-b border-slate-200 px-5 py-4">
         <div className="mx-auto flex max-w-3xl items-center justify-between">
           <Link to="/" className="text-lg font-bold tracking-tight">
-            {BRAND.name}
+            {APPEALS_BRAND}
           </Link>
           <span className="text-xs text-slate-500">{ENTRY_OFFER.name}</span>
         </div>
@@ -206,7 +206,7 @@ export default function RevisionPage() {
         </div>
       </main>
 
-      <Footer />
+      <Footer brand={APPEALS_BRAND} disclaimer={ENTRY_DISCLAIMER} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { BRAND, ENTRY_OFFER } from '../../config/brand';
+import { APPEALS_BRAND, BRAND, ENTRY_OFFER } from '../../config/brand';
 import { SUSPENSION_TYPES, type SuspensionType } from './poa-template';
 
 /**
@@ -33,7 +33,7 @@ export interface EntryMessageInput {
   planRejected?: boolean;
 }
 
-const SIGNATURE = `${BRAND.name}\n${BRAND.contactEmail}`;
+const SIGNATURE = `${APPEALS_BRAND}\n${BRAND.contactEmail}`;
 
 function greet(name?: string): string {
   return name?.trim() ? `Hola, ${name.trim()}:` : 'Hola:';

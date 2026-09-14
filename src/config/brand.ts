@@ -7,10 +7,20 @@ export const BRAND = {
   name: 'Complyo',
   tagline: 'Cumplimiento RAP para vender en la Unión Europea',
   domain: 'complyo.eu',
-  contactEmail: 'hola@complyo.eu',
+  contactEmail: 'juandrodf2010@hotmail.com',
   /** Se usa en el pie del PDF y en la web. */
   legalEntityNote: 'Complyo',
 } as const;
+
+/**
+ * Nombre del producto de apelaciones, de cara al cliente.
+ *
+ * Complyo es la marca matriz; APEALS es el servicio de apelaciones y revisión
+ * de Plan of Action, que es lo que se vende primero. Las páginas y los mensajes
+ * de ese servicio firman con esto; el informe RAP y su PDF siguen firmando con
+ * BRAND.name, porque son otro producto de la misma casa.
+ */
+export const APPEALS_BRAND = `${BRAND.name} APEALS`;
 
 /**
  * DESCARGO DE RESPONSABILIDAD.
@@ -20,8 +30,20 @@ export const BRAND = {
 export const DISCLAIMER =
   'Este informe es orientativo y no constituye asesoramiento jurídico. ' +
   `${BRAND.name} no actúa como representante autorizado ni como organismo de responsabilidad ` +
-  'de productor. Las altas ante autoridades y organismos se tramitan a través de socios ' +
-  'establecidos en la Unión Europea.';
+  'de productor.';
+
+/**
+ * DESCARGO DE LA OFERTA DE APELACIONES (/revision y /appeals).
+ *
+ * El DISCLAIMER de arriba está escrito para el informe RAP: habla de un informe
+ * que este servicio no entrega y de figuras regulatorias que no vienen al caso.
+ * Este dice lo que APEALS hace de verdad, y nada más. Texto aprobado por el
+ * responsable del negocio; no cambiar sin su visto bueno.
+ */
+export const ENTRY_DISCLAIMER =
+  `${BRAND.name} revisa el Plan of Action que le envías y le indica qué pruebas le faltan. ` +
+  'No somos abogados y esto no constituye asesoramiento jurídico. La decisión de reactivar ' +
+  'una cuenta es exclusivamente de Amazon: no la garantizamos.';
 
 /** Etiqueta que se pinta sobre toda obligación con verified: false. */
 export const UNVERIFIED_BADGE = 'PENDIENTE DE VERIFICACIÓN — no usar con cliente';
@@ -99,8 +121,10 @@ export const REPORT_CTA_LABEL = 'Resolverlo';
  */
 export const SERVICE_COMMITMENTS = {
   reportDelivery: 'Informe entregado en 24 horas desde el diagnóstico.',
+  // No se afirma tener socio en la Unión Europea, porque hoy no lo hay. Decir
+  // lo contrario en una página pública es vender algo que no se puede entregar.
   resolutionStart:
-    'El alta se inicia con un socio establecido en la Unión Europea en cuanto se confirma el pago.',
+    'La tramitación del alta requiere un socio establecido en la Unión Europea. Ese servicio todavía no está disponible.',
 } as const;
 
 /**
@@ -169,6 +193,27 @@ export const ENTRY_OFFER = {
   /** Escalón siguiente, una vez hay un caso atendido y confianza. */
   upsell:
     'Si después de leerlo prefieres que lleve el caso entero —redacción, envío y las réplicas hasta cerrar—, el análisis completo cuesta 1.500 $ y te descuento lo que ya has pagado.',
+} as const;
+
+/**
+ * Portada: textos de la oferta que SÍ se puede entregar hoy.
+ *
+ * La portada vendía el informe RAP de 97 $, que sigue bloqueado por la base de
+ * reglas sin verificar. Mandar ahí a un prospecto de APEALS era enseñarle
+ * primero algo que no se le puede entregar. La redacción es la misma que ya
+ * convierte en /revision, para no inventar promesas nuevas.
+ *
+ * El diagnóstico RAP no desaparece: baja a segunda puerta y sin precio, porque
+ * es un servicio futuro de Complyo y no se anuncia hasta que se pueda cumplir.
+ */
+export const APPEALS_LANDING = {
+  headline: 'Te reviso el Plan of Action antes de que lo mandes.',
+  lines: [
+    'El motivo más común de rechazo no son las medidas correctoras: es la causa raíz. Se escribe un síntoma —«tuvimos retrasos», «entraron reseñas negativas»— y el revisor no ve qué ha cambiado para que no se repita.',
+    `Leo tu plan entero, reescribo esa parte y te digo qué pruebas te faltan. ${ENTRY_OFFER.price.label}, en ${ENTRY_OFFER.deliveryHours} horas, y se paga al recibirlo.`,
+    'Antes de pedirte nada: pega el correo de Amazon y te clasifico el caso al momento, gratis y sin dejar tus datos.',
+  ],
+  ctaLabel: 'Empezar con mi caso',
 } as const;
 
 /**

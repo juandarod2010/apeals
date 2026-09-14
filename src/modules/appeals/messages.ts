@@ -1,4 +1,4 @@
-import { APPEALS, BRAND } from '../../config/brand';
+import { APPEALS, APPEALS_BRAND, BRAND } from '../../config/brand';
 
 /**
  * Plantillas de primer contacto para vendedores con la cuenta o el listing
@@ -43,7 +43,7 @@ function fill(template: string, input: AppealMessageInput): string {
     .replaceAll(PLACEHOLDERS.days, input.daysSuspended ? String(input.daysSuspended) : PLACEHOLDERS.days);
 }
 
-const SIGNATURE = `${BRAND.name}\n${BRAND.contactEmail}`;
+const SIGNATURE = `${APPEALS_BRAND}\n${BRAND.contactEmail}`;
 
 /**
  * VARIANTE A — urgencia.

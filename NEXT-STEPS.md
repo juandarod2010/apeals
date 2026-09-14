@@ -53,9 +53,11 @@ decisiones. Ejecuta `npm run predeploy:check` y te dice exactamente qué falta.
    escrita en el README. Con Supabase conectado deja de ser la puerta, pero
    sigue siendo la del modo local.
 
-9. **Decidir la marca real.** Ahora dice Complyo, `complyo.eu` y
-   `hola@complyo.eu`, todo de relleno. Un solo fichero: `src/config/brand.ts`.
-   Ahí están también los colores del PDF y el hueco del logo (`BRAND_LOGO`).
+9. **Decidir la marca real.** Hecho salvo el dominio: Complyo es la marca
+   matriz, Complyo APEALS el producto de apelaciones, y el correo de contacto
+   ya es real. `domain` sigue en `complyo.eu` y no lo ve ningún cliente. Un solo
+   fichero: `src/config/brand.ts`. Ahí están también los colores del PDF y el
+   hueco del logo (`BRAND_LOGO`).
 
 10. **Ajustar `SERVICE_COMMITMENTS`.** Promete informe en 24 horas y alta
     iniciada al confirmar el pago. Son promesas tuyas.
